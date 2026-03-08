@@ -1,12 +1,135 @@
 import { Component, inject, signal } from '@angular/core';
-import { form, required, email, minLength } from '@angular/forms/signals';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { form, FormField, required, email, minLength } from '@angular/forms/signals';
+import {
+  NgOatCard,
+  NgOatCardHeader,
+  NgOatCardFooter,
+  NgOatInput,
+  NgOatSelect,
+  NgOatCheckbox,
+  NgOatRadioGroup,
+  NgOatSwitch,
+  NgOatFileUpload,
+  NgOatFormError,
+  NgOatButton,
+  NgOatProgress,
+  NgOatAlert,
+} from '@letsprogram/ng-oat';
 import { NgOatToast } from '@letsprogram/ng-oat';
 import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-register',
-  template: ``,
+  imports: [
+    RouterLink,
+    FormsModule,
+    FormField,
+    NgOatCard,
+    NgOatCardHeader,
+    NgOatCardFooter,
+    NgOatInput,
+    NgOatSelect,
+    NgOatCheckbox,
+    NgOatRadioGroup,
+    NgOatSwitch,
+    NgOatFileUpload,
+    NgOatFormError,
+    NgOatButton,
+    NgOatProgress,
+    NgOatAlert,
+  ],
+  template: `
+    <div class="center">
+      <div class="w-full max-w-md">
+        <ng-oat-card>
+          <ng-oat-card-header>
+            <h2 class="mt-0 mb-0">Create Account</h2>
+            <p class="text-light text-sm mt-0">Step {{ step() }} of 3</p>
+            <ng-oat-progress [value]="step() * 33.33" [max]="100" />
+          </ng-oat-card-header>
+
+          @if (errorMsg()) {
+            <ng-oat-alert variant="danger" [dismissible]="true" (dismissed)="errorMsg.set('')" class="mb-4">
+              {{ errorMsg() }}
+            </ng-oat-alert>
+          }
+
+          <!-- ── STEP 1: Basic Info ── -->
+          @if (step() === 1) {
+            <form (ngSubmit)="nextStep()" class="mt-4">
+              <div class="flex flex-col gap-4">
+                <div>
+                  <ng-oat-input label="Full Name" placeholder="John Doe" autocomplete="name" [formField]="regForm.name" />
+                  <ng-oat-form-error [control]="regForm.name()" />
+                </div>
+                <div>
+                  <ng-oat-input label="Email" type="email" placeholder="you@example.com" autocomplete="email" [formField]="regForm.email" />
+                  <ng-oat-form-error [control]="regForm.email()" />
+                </div>
+                <div>
+                  <ng-oat-input label="Password" type="password" placeholder="••••••••" autocomplete="new-password" [formField]="regForm.password" />
+                  <ng-oat-form-error [control]="regForm.password()" />
+                </div>
+                <div>
+                  <ng-oat-input label="Confirm Password" type="password" placeholder="••••••••" [formField]="regForm.confirmPassword" />
+                  <ng-oat-form-error [control]="regForm.confirmPassword()" />
+                </div>
+              </div>
+              <ng-oat-card-footer>
+                <div class="flex justify-between w-full">
+                  <ng-oat-button variant="default" btnStyle="ghost" routerLink="/login"> Back to Login </ng-oat-button>
+                  <ng-oat-button type="submit" variant="default" btnStyle="filled"> Next </ng-oat-button>
+                </div>
+              </ng-oat-card-footer>
+            </form>
+          }
+
+          <!-- ── STEP 2: Profile Details ── -->
+          @if (step() === 2) {
+            <div class="mt-4 flex flex-col gap-4">
+              <ng-oat-select label="Role" placeholder="Select your role" [options]="roleOptions" [(value)]="selectedRole" />
+
+              <ng-oat-file-upload label="Profile Picture" accept="image/*" (filesSelected)="onFileSelect($event)" />
+
+              <ng-oat-switch label="Subscribe to newsletter" [(checked)]="subscribeNewsletter" />
+            </div>
+            <ng-oat-card-footer>
+              <div class="flex justify-between w-full">
+                <ng-oat-button variant="default" btnStyle="ghost" (clicked)="prevStep()"> Back </ng-oat-button>
+                <ng-oat-button variant="default" btnStyle="filled" (clicked)="nextStep()"> Next </ng-oat-button>
+              </div>
+            </ng-oat-card-footer>
+          }
+
+          <!-- ── STEP 3: Preferences ── -->
+          @if (step() === 3) {
+            <div class="mt-4 flex flex-col gap-4">
+              <ng-oat-radio-group label="How did you hear about us?" [options]="referralOptions" [(value)]="referralSource" />
+
+              <ng-oat-checkbox label="I agree to the Terms of Service and Privacy Policy" [(checked)]="agreeTerms" />
+
+              @if (showTermsError()) {
+                <ng-oat-alert variant="warning"> You must agree to the terms before registering. </ng-oat-alert>
+              }
+            </div>
+            <ng-oat-card-footer>
+              <div class="flex justify-between w-full">
+                <ng-oat-button variant="default" btnStyle="ghost" (clicked)="prevStep()"> Back </ng-oat-button>
+                <ng-oat-button variant="default" btnStyle="filled" (clicked)="register()"> Create Account </ng-oat-button>
+              </div>
+            </ng-oat-card-footer>
+          }
+        </ng-oat-card>
+      </div>
+    </div>
+  `,
+  styles: `
+    :host {
+      display: block;
+    }
+  `,
 })
 export class RegisterPage {
   private readonly auth = inject(AuthService);

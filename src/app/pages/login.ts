@@ -1,22 +1,37 @@
 import { Component, inject, signal } from '@angular/core';
-import { form, required, email, minLength, FormField } from '@angular/forms/signals';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { form, FormField, required, email, minLength } from '@angular/forms/signals';
 import {
   NgOatCard,
-  NgOatCardFooter,
   NgOatCardHeader,
-  NgOatSeparator,
-  NgOatToast,
+  NgOatCardFooter,
   NgOatInput,
   NgOatCheckbox,
   NgOatFormError,
   NgOatButton,
+  NgOatSeparator,
+  NgOatAlert,
 } from '@letsprogram/ng-oat';
+import { NgOatToast } from '@letsprogram/ng-oat';
 import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-login',
-  imports: [NgOatCard, NgOatCardHeader, NgOatCardFooter, NgOatInput, NgOatFormError, NgOatCheckbox, NgOatButton, NgOatSeparator, FormField],
+  imports: [
+    RouterLink,
+    FormsModule,
+    FormField,
+    NgOatCard,
+    NgOatCardHeader,
+    NgOatCardFooter,
+    NgOatInput,
+    NgOatCheckbox,
+    NgOatFormError,
+    NgOatButton,
+    NgOatSeparator,
+    NgOatAlert,
+  ],
   template: `
     <div class="center">
       <div class="w-full max-w-md">
@@ -25,6 +40,12 @@ import { AuthService } from '../services/auth.service';
             <h2 class="mb-0">Welcome Back</h2>
             <p class="text-light text-sm">Sign in to your LetsBlog account</p>
           </ng-oat-card-header>
+
+          @if (errorMsg()) {
+            <ng-oat-alert variant="danger" [dismissible]="true" (dismissed)="errorMsg.set('')" class="mb-4">
+              {{ errorMsg() }}
+            </ng-oat-alert>
+          }
 
           <form (ngSubmit)="onSubmit()" class="mt-4">
             <div class="vstack">
