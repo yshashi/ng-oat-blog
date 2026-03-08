@@ -1,30 +1,40 @@
-import { Component, inject, signal } from '@angular/core';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { Component, inject, viewChild } from '@angular/core';
+import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import {
-  NgOatButton,
-  NgOatThemeSelector,
   NgOatToolbar,
+  NgOatThemeSelector,
   NgOatDropdownComponent,
-  NgOatDropdown,
-  NgOatSidebarComponent,
-  NgOatSidebar,
+  NgOatButton,
   NgOatSeparator,
+  NgOatSidebar,
 } from '@letsprogram/ng-oat';
-
 import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
-  imports: [NgOatToolbar, RouterOutlet, RouterLink, NgOatThemeSelector, NgOatSeparator, NgOatButton, NgOatDropdownComponent, NgOatSidebar],
+  imports: [
+    RouterOutlet,
+    RouterLink,
+    RouterLinkActive,
+    NgOatToolbar,
+    NgOatThemeSelector,
+    NgOatDropdownComponent,
+    NgOatButton,
+    NgOatSeparator,
+    NgOatSidebar,
+  ],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
 export class App {
-  protected readonly title = signal('ng-oat-blog');
+  private readonly router = inject(Router);
+  protected readonly auth = inject(AuthService);
 
-  readonly auth = inject(AuthService);
+  readonly sidebar = viewChild(NgOatSidebar);
 
-  onToggle(event: any) {
-    console.log('Toggle event:', event);
+  logout(): void {
+    this.auth.logout();
+    this.sidebar()?.close();
+    this.router.navigate(['/']);
   }
 }

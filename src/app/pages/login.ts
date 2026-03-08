@@ -37,25 +37,42 @@ import { AuthService } from '../services/auth.service';
       <div class="w-full max-w-md">
         <ng-oat-card>
           <ng-oat-card-header>
-            <h2 class="mb-0">Welcome Back</h2>
-            <p class="text-light text-sm">Sign in to your LetsBlog account</p>
+            <h2 class="mt-0 mb-0">Welcome Back</h2>
+            <p class="text-light text-sm mt-0">Sign in to your LetsBlog account</p>
           </ng-oat-card-header>
 
           @if (errorMsg()) {
-            <ng-oat-alert variant="danger" [dismissible]="true" (dismissed)="errorMsg.set('')" class="mb-4">
+            <ng-oat-alert
+              variant="danger"
+              [dismissible]="true"
+              (dismissed)="errorMsg.set('')"
+              class="mb-4"
+            >
               {{ errorMsg() }}
             </ng-oat-alert>
           }
 
           <form (ngSubmit)="onSubmit()" class="mt-4">
-            <div class="vstack">
+            <div class="flex flex-col gap-4">
               <div>
-                <ng-oat-input label="Email" type="email" autocomplete="email" placeholder="you@example.com" [formField]="loginForm.email" />
+                <ng-oat-input
+                  label="Email"
+                  type="email"
+                  autocomplete="email"
+                  placeholder="you@example.com"
+                  [formField]="loginForm.email"
+                />
                 <ng-oat-form-error [control]="loginForm.email()" />
               </div>
 
               <div>
-                <ng-oat-input label="Password" type="password" autocomplete="current-password" placeholder="••••••••" [formField]="loginForm.password" />
+                <ng-oat-input
+                  label="Password"
+                  type="password"
+                  autocomplete="current-password"
+                  placeholder="••••••••"
+                  [formField]="loginForm.password"
+                />
                 <ng-oat-form-error [control]="loginForm.password()" />
               </div>
 
@@ -66,8 +83,10 @@ import { AuthService } from '../services/auth.service';
             </div>
 
             <ng-oat-card-footer>
-              <div class="vstack w-full">
-                <ng-oat-button type="submit" variant="default" btnStyle="filled" class="w-full"> Sign In </ng-oat-button>
+              <div class="flex flex-col gap-4 w-full">
+                <ng-oat-button type="submit" variant="default" btnStyle="filled" class="w-full">
+                  Sign In
+                </ng-oat-button>
 
                 <ng-oat-separator label="or" />
 
@@ -81,6 +100,11 @@ import { AuthService } from '../services/auth.service';
         </ng-oat-card>
       </div>
     </div>
+  `,
+  styles: `
+    :host {
+      display: block;
+    }
   `,
 })
 export class LoginPage {

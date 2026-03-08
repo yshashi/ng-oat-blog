@@ -55,22 +55,40 @@ import { DatePipe, SlicePipe } from '@angular/common';
       <div class="mb-6">
         <ng-oat-breadcrumb [items]="breadcrumbs" (navigate)="onBreadcrumb($event)" />
         <h1 class="mt-2 mb-1">Blog Posts</h1>
-        <p class="mt-0 text-light">Discover articles on Angular, TypeScript, CSS, DevOps, and more.</p>
+        <p class="mt-0 text-light">
+          Discover articles on Angular, TypeScript, CSS, DevOps, and more.
+        </p>
       </div>
 
       <!-- ── Toolbar: Search + Sort + View Toggle ── -->
       <div class="flex items-center justify-between gap-4">
         <div class="toolbar-left">
-          <ng-oat-search-input placeholder="Filter posts..." [debounceMs]="300" (search)="onSearch($event)" />
+          <ng-oat-search-input
+            placeholder="Filter posts..."
+            [debounceMs]="300"
+            (search)="onSearch($event)"
+          />
         </div>
 
         <div class="vstack">
-          <ng-oat-select label="" placeholder="Sort by" [options]="sortOptions" [(value)]="sortBy" />
+          <ng-oat-select
+            label=""
+            placeholder="Sort by"
+            [options]="sortOptions"
+            [(value)]="sortBy"
+          />
 
           <ng-oat-toggle-group class="mx-auto" [(value)]="viewMode">
             <ng-oat-tooltip text="Grid view" position="bottom">
               <ng-oat-toggle class="mr-2" toggleValue="grid" ariaLabel="Grid view">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
                   <rect x="3" y="3" width="7" height="7" />
                   <rect x="14" y="3" width="7" height="7" />
                   <rect x="3" y="14" width="7" height="7" />
@@ -78,9 +96,16 @@ import { DatePipe, SlicePipe } from '@angular/common';
                 </svg>
               </ng-oat-toggle>
             </ng-oat-tooltip>
-            <ng-oat-tooltip text="List view" position="left">
+            <ng-oat-tooltip text="List view" position="bottom">
               <ng-oat-toggle toggleValue="list" ariaLabel="List view">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
                   <line x1="8" y1="6" x2="21" y2="6" />
                   <line x1="8" y1="12" x2="21" y2="12" />
                   <line x1="8" y1="18" x2="21" y2="18" />
@@ -96,7 +121,11 @@ import { DatePipe, SlicePipe } from '@angular/common';
 
       <!-- ── Category Chips ── -->
       <section class="mt-4 mb-4">
-        <ng-oat-chip-group [multiple]="false" ariaLabel="Filter by category" [(value)]="activeCategory">
+        <ng-oat-chip-group
+          [multiple]="false"
+          ariaLabel="Filter by category"
+          [(value)]="activeCategory"
+        >
           @for (cat of categories; track cat.slug) {
             <ng-oat-chip [chipValue]="cat.slug" [selectable]="true" variant="outline">
               {{ cat.label }}
@@ -127,9 +156,13 @@ import { DatePipe, SlicePipe } from '@angular/common';
       <!-- ── Empty State ── -->
       @if (!loading() && pagedPosts().length === 0) {
         <div class="mt-6">
-          <ng-oat-alert variant="warning"> No posts found matching your criteria. Try a different search term or category. </ng-oat-alert>
+          <ng-oat-alert variant="warning">
+            No posts found matching your criteria. Try a different search term or category.
+          </ng-oat-alert>
           <div class="text-center mt-4">
-            <ng-oat-button variant="default" btnStyle="outline" (clicked)="clearFilters()"> Clear All Filters </ng-oat-button>
+            <ng-oat-button variant="default" btnStyle="outline" (clicked)="clearFilters()">
+              Clear All Filters
+            </ng-oat-button>
           </div>
         </div>
       }
@@ -179,18 +212,20 @@ import { DatePipe, SlicePipe } from '@angular/common';
                   style="width:200px;min-width:200px;height:140px;object-fit:cover;flex-shrink:0;border-radius:var(--ot-radius,0.5rem)"
                 />
                 <div class="flex-1 py-2">
-                  <div class="hstack gap-2 mb-2">
+                  <div class="flex items-center gap-sm mb-1">
                     <ng-oat-badge [variant]="getCategoryVariant(post.category.slug)">
                       {{ post.category.label }}
                     </ng-oat-badge>
                     <span class="text-xs text-light">{{ post.readingTime }} min read</span>
                   </div>
-                  <h3 class="mt-0 mb-1">{{ post.title }}</h3>
+                  <h3 class="mt-0 mb-1" style="font-size:1rem;line-height:1.3">{{ post.title }}</h3>
                   <p class="text-sm text-light mt-0 mb-1">{{ post.excerpt | slice: 0 : 160 }}...</p>
                   <div class="flex items-center gap-sm">
                     <ng-oat-avatar [src]="post.author.avatar" [alt]="post.author.name" size="sm" />
                     <span class="text-sm">{{ post.author.name }}</span>
-                    <span class="text-xs text-light">· {{ post.createdAt | date: 'MMM d, y' }}</span>
+                    <span class="text-xs text-light"
+                      >· {{ post.createdAt | date: 'MMM d, y' }}</span
+                    >
                   </div>
                 </div>
               </div>
@@ -202,7 +237,12 @@ import { DatePipe, SlicePipe } from '@angular/common';
       <!-- ── Pagination ── -->
       @if (!loading() && totalPages() > 1) {
         <div class="flex justify-center mt-6 mb-4">
-          <ng-oat-pagination [totalPages]="totalPages()" [currentPage]="currentPage()" [maxVisible]="5" (pageChange)="onPageChange($event)" />
+          <ng-oat-pagination
+            [totalPages]="totalPages()"
+            [currentPage]="currentPage()"
+            [maxVisible]="5"
+            (pageChange)="onPageChange($event)"
+          />
         </div>
       }
     </div>
@@ -243,7 +283,12 @@ export class BlogsPage implements OnInit {
     const cat = this.activeCategory();
 
     if (q) {
-      posts = posts.filter((p) => p.title.toLowerCase().includes(q) || p.excerpt.toLowerCase().includes(q) || p.tags.some((t) => t.toLowerCase().includes(q)));
+      posts = posts.filter(
+        (p) =>
+          p.title.toLowerCase().includes(q) ||
+          p.excerpt.toLowerCase().includes(q) ||
+          p.tags.some((t) => t.toLowerCase().includes(q)),
+      );
     }
 
     if (cat) {
@@ -285,7 +330,7 @@ export class BlogsPage implements OnInit {
         this.searchQuery.set(params['q']);
       }
     });
-    setTimeout(() => this.loading.set(false), 10000);
+    setTimeout(() => this.loading.set(false), 500);
   }
 
   onSearch(query: string): void {

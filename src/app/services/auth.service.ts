@@ -9,6 +9,7 @@ export class AuthService {
   readonly isLoggedIn = computed(() => this._currentUser() !== null);
 
   login(email: string, _password: string): boolean {
+    // Mock: accept any valid-looking credentials
     if (email && _password.length >= 6) {
       this._currentUser.set(AUTHORS[0]);
       return true;
@@ -17,6 +18,7 @@ export class AuthService {
   }
 
   register(_data: { name: string; email: string; password: string }): boolean {
+    // Mock: always succeed
     return true;
   }
 

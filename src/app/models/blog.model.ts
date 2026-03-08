@@ -1,3 +1,7 @@
+/* ──────────────────────────────────────────────────────────
+ *  Blog domain models & seed data
+ * ────────────────────────────────────────────────────────── */
+
 export interface Author {
   id: string;
   name: string;
@@ -50,6 +54,8 @@ export interface TeamMember {
   bio: string;
 }
 
+/* ── Seed Authors ──────────────────────────────────────── */
+
 export const AUTHORS: Author[] = [
   {
     id: 'a1',
@@ -81,6 +87,8 @@ export const AUTHORS: Author[] = [
   },
 ];
 
+/* ── Seed Categories ───────────────────────────────────── */
+
 export const CATEGORIES: Category[] = [
   { id: 'all', label: 'All', slug: 'all' },
   { id: 'c1', label: 'Angular', slug: 'angular' },
@@ -90,6 +98,8 @@ export const CATEGORIES: Category[] = [
   { id: 'c5', label: 'Design', slug: 'design' },
   { id: 'c6', label: 'Performance', slug: 'performance' },
 ];
+
+/* ── Seed Blog Posts ───────────────────────────────────── */
 
 const ARTICLE_BODY = `
 ## Introduction
@@ -414,6 +424,8 @@ export const BLOG_POSTS: BlogPost[] = [
   },
 ];
 
+/* ── Seed Comments ─────────────────────────────────────── */
+
 export const COMMENTS: BlogComment[] = [
   {
     id: 'cm1',
@@ -501,6 +513,8 @@ export const COMMENTS: BlogComment[] = [
   },
 ];
 
+/* ── Seed Team Members ─────────────────────────────────── */
+
 export const TEAM_MEMBERS: TeamMember[] = [
   {
     name: 'Sashi Kumar',
@@ -527,6 +541,8 @@ export const TEAM_MEMBERS: TeamMember[] = [
     bio: 'Creating delightful interfaces that everyone can use.',
   },
 ];
+
+/* ── FAQ Items ─────────────────────────────────────────── */
 
 export const FAQ_ITEMS = [
   {

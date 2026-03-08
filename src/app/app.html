@@ -1,47 +1,57 @@
+<!-- ═══════════════════ TOOLBAR ═══════════════════ -->
 <ng-oat-toolbar>
-  <button toolbarStart data-sidebar-toggle class="ghost" (click)="sd.toggle()">☰</button>
-  <strong toolbarStart>🌾 Let's Blog</strong>
+  <div class="hstack gap-2" toolbarStart>
+    <button toolbarStart data-sidebar-toggle class="ghost" (click)="sidebar.toggle()">☰</button>
+    <strong><a routerLink="/">LetsBlog</a></strong>
+  </div>
 
-  <span toolbarEnd class="hstack gap-2">
+  <div toolbarEnd class="hstack gap-2">
     <ng-oat-theme-selector />
-    @if(auth.isLoggedIn()) {
-    <ng-oat-dropdown #dd (openChange)="onToggle($event)">
-      <button trigger class="ghost">👻 {{auth.currentUser()?.name || 'Sky'}}</button>
-      <button role="menuitem">My Profile</button>
-      <button role="menuitem">Write a post</button>
-      <hr>
-      <button role="menuitem">Logout</button>
+    @if (auth.isLoggedIn()) {
+    <ng-oat-button btnStyle="outline" size="small" routerLink="/blogs/create">✏️ Write</ng-oat-button>
+    <ng-oat-dropdown>
+      <button trigger class="ghost">👤 {{ auth.currentUser()?.name }}</button>
+      <a role="menuitem" routerLink="/profile">My Profile</a>
+      <a role="menuitem" routerLink="/blogs/create">Write a Post</a>
+      <hr />
+      <button role="menuitem" (click)="logout()">Sign Out</button>
     </ng-oat-dropdown>
-
     } @else {
-    <ng-oat-button routerLink="/login" btnStyle="outline" size="small">Login</ng-oat-button>
-    <ng-oat-button routerLink="/register" btnStyle="filled" size="small">Get Started</ng-oat-button>
+    <ng-oat-button btnStyle="outline" size="small" routerLink="/login">Sign In</ng-oat-button>
+    <ng-oat-button btnStyle="filled" size="small" routerLink="/register">Get Started</ng-oat-button>
     }
-
-  </span>
+  </div>
 </ng-oat-toolbar>
 
-<div ngOatSidebar #sd="ngOatSidebar" data-sidebar-layout style="--topnav-offset: var(--space-12)">
+<div ngOatSidebar #sidebar="ngOatSidebar" data-sidebar-layout style="--topnav-offset:var(--space-12)">
   <aside data-sidebar>
+
     <nav>
       <ul>
-        <li><a routerLink="/" routerLinkActive="active">🏠 Home</a></li>
-        <li><a routerLink="/blogs" routerLinkActive="active">📖 Blogs</a></li>
-        <li><a routerLink="/about" routerLinkActive="active">ℹ️ About</a></li>
+        <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">🏠 Home</a></li>
+        <li><a routerLink="/blogs" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">📖 Blogs</a></li>
+        <li><a routerLink="/about" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">ℹ️ About</a></li>
         <ng-oat-separator />
         @if (auth.isLoggedIn()) {
-        <li><a routerLink="/profile" routerLinkActive="active">👤 My
+        <li><a routerLink="/profile" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">👤 My
             Profile</a></li>
-        <li><a routerLink="/blogs/create" routerLinkActive="active">✏️ Write a
+        <li><a routerLink="/blogs/create" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">✏️ Write a
             Post</a></li>
         } @else {
-        <div class="vstack gap-2">
+        <div class="vstack gap-2 mt-2">
           <ng-oat-button btnStyle="outline" size="small" routerLink="/login">Sign In</ng-oat-button>
           <ng-oat-button btnStyle="filled" size="small" routerLink="/register">Get Started</ng-oat-button>
         </div>
         }
       </ul>
     </nav>
+
+    <footer>
+      <p class="text-xs">
+        Built with
+        <a href="https://ng-oat.letsprogram.in" target="_blank" rel="noopener">&#64;letsprogram/ng-oat</a>
+      </p>
+    </footer>
   </aside>
 
   <main class="container mt-4">
